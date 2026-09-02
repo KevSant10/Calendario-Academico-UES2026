@@ -1,6 +1,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Mis Materias — UES en Línea</title>
+<title>Mi Semana Académica</title>
 <style>
   :root{
     --bg:#f4f6f8;
@@ -49,6 +49,13 @@
   header h1{font-size:1.9rem;}
   header .sub{color:var(--ink-soft);font-size:.92rem;margin-top:6px;}
 
+  .daygroup{margin-bottom:32px;}
+  .daygroup .dayhead{
+    font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;font-weight:700;
+    color:var(--accent);margin-bottom:10px;display:flex;align-items:center;gap:10px;
+  }
+  .daygroup .dayhead::after{content:"";flex:1;height:1px;background:var(--line);}
+
   .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
   @media (max-width:640px){.grid{grid-template-columns:1fr;}}
 
@@ -89,11 +96,11 @@
 <div class="wrap">
   <header>
     <div class="eyebrow">UES en Línea · Escuela de Ingeniería de Sistemas Informáticos</div>
-    <h1>Mis materias — Ciclo II 2026</h1>
-    <div class="sub">Calendario de actividades evaluadas de cada materia, sincronizado entre tus dispositivos.</div>
+    <h1>Horario Ciclo II 2026</h1>
+    <div class="sub">Ciclo II 2026 · tus materias ordenadas por día de tutoría, sincronizadas entre tus dispositivos.</div>
   </header>
 
-  <div class="grid" id="grid"></div>
+  <div id="groups"></div>
 
   <footer>
     Datos tomados de las Orientaciones Académicas de cada materia. Actualiza cada calendario individual para llevar tu avance al día.
@@ -102,20 +109,20 @@
 
 <script>
   const subjects = {
-    "cpr115": {code:"CPR-115", name:"Consultor\u00eda Profesional", group:"Grupo 1", activities:[{name:"Discusi\u00f3n 1",date:"2026-08-30T23:55:00"},{name:"Tarea de Investigaci\u00f3n",date:"2026-09-06T23:55:00"},{name:"Desarrollo de Proyecto \u2014 Etapa 1",date:"2026-09-13T23:55:00"},{name:"Primer Examen Parcial",date:"2026-09-22T19:00:00"},{name:"Discusi\u00f3n 2",date:"2026-10-04T23:55:00"},{name:"Desarrollo de Proyecto \u2014 Etapa 2",date:"2026-10-11T23:55:00"},{name:"Desarrollo de Proyecto \u2014 Etapa 3",date:"2026-11-01T23:55:00"},{name:"Discusi\u00f3n 3",date:"2026-11-08T23:55:00"},{name:"Segundo Examen Parcial",date:"2026-11-18T21:00:00"},{name:"Examen de Suficiencia",date:"2026-12-01T21:00:00"}]},
-    "too115": {code:"TOO-115", name:"Tecnolog\u00eda Orientada a Objetos", group:"Grupo 3", activities:[{name:"Laboratorio 1",date:"2026-09-03T19:00:00"},{name:"Proyecto \u2014 Etapa 1",date:"2026-09-20T23:55:00"},{name:"Proyecto Etapa 1 \u2014 Exposici\u00f3n y defensa",date:"2026-09-24T19:00:00"},{name:"Laboratorio 2",date:"2026-10-29T23:55:00"},{name:"Proyecto \u2014 Etapa 2",date:"2026-11-15T23:55:00"},{name:"Proyecto Etapa 2 \u2014 Exposici\u00f3n y defensa",date:"2026-11-19T19:00:00"},{name:"Examen Final Te\u00f3rico",date:"2026-11-23T21:00:00"},{name:"Examen de Suficiencia",date:"2026-12-07T21:00:00"}]},
     "ibd115": {code:"IBD-115", name:"Implementaci\u00f3n de Bases de Datos", group:"Grupo 1", activities:[{name:"Propuesta de Proyecto",date:"2026-08-19T23:50:00"},{name:"Proyecto \u2014 Etapa 1",date:"2026-09-12T23:50:00"},{name:"Parcial Te\u00f3rico 1",date:"2026-09-28T19:00:00"},{name:"Proyecto \u2014 Etapa 2",date:"2026-10-11T23:50:00"},{name:"Laboratorio \u2014 Implementaci\u00f3n Resultante",date:"2026-11-08T23:50:00"},{name:"Laboratorio \u2014 Defensa individual",date:"2026-11-12T19:00:00"},{name:"Parcial Te\u00f3rico 2",date:"2026-11-19T19:00:00"},{name:"Examen de Suficiencia",date:"2026-12-08T19:00:00"}]},
+    "api115": {code:"API-115", name:"Admin. de Proyectos Inform\u00e1ticos", group:"Grupo 1", activities:[{name:"Tarea Ex Aula",date:"2026-08-16T23:50:00"},{name:"Proyecto \u2014 Etapa 1",date:"2026-09-20T23:50:00"},{name:"Parcial 1",date:"2026-10-15T21:00:00"},{name:"Proyecto \u2014 Etapa 2",date:"2026-11-01T23:50:00"},{name:"Examen de Suficiencia",date:"2026-11-30T21:00:00"}]},
+    "cpr115": {code:"CPR-115", name:"Consultor\u00eda Profesional", group:"Grupo 1", activities:[{name:"Discusi\u00f3n 1",date:"2026-08-30T23:55:00"},{name:"Tarea de Investigaci\u00f3n",date:"2026-09-06T23:55:00"},{name:"Desarrollo de Proyecto \u2014 Etapa 1",date:"2026-09-13T23:55:00"},{name:"Primer Examen Parcial",date:"2026-09-22T19:00:00"},{name:"Discusi\u00f3n 2",date:"2026-10-04T23:55:00"},{name:"Desarrollo de Proyecto \u2014 Etapa 2",date:"2026-10-11T23:55:00"},{name:"Desarrollo de Proyecto \u2014 Etapa 3",date:"2026-11-01T23:55:00"},{name:"Discusi\u00f3n 3",date:"2026-11-08T23:55:00"},{name:"Segundo Examen Parcial",date:"2026-11-18T21:00:00"},{name:"Examen de Suficiencia",date:"2026-12-01T21:00:00"}]},
     "acc115": {code:"ACC-115", name:"Admin. de Centros de C\u00f3mputo", group:"Grupo 3", activities:[{name:"Tarea Ex Aula 1",date:"2026-09-06T23:50:00"},{name:"Tarea Ex Aula 2",date:"2026-09-27T23:50:00"},{name:"Proyecto Integrador \u2014 Etapa 1",date:"2026-10-06T23:50:00"},{name:"Parcial Te\u00f3rico 1",date:"2026-10-13T21:00:00"},{name:"Proyecto Integrador \u2014 Etapa 2",date:"2026-11-10T23:50:00"},{name:"Tarea Ex Aula 3",date:"2026-11-10T23:50:00"},{name:"Parcial Te\u00f3rico 2",date:"2026-11-17T21:00:00"},{name:"Examen de Suficiencia",date:"2026-11-30T21:00:00"}]},
-    "api115": {code:"API-115", name:"Admin. de Proyectos Inform\u00e1ticos", group:"Grupo 1", activities:[{name:"Tarea Ex Aula",date:"2026-08-16T23:50:00"},{name:"Proyecto \u2014 Etapa 1",date:"2026-09-20T23:50:00"},{name:"Parcial 1",date:"2026-10-15T21:00:00"},{name:"Proyecto \u2014 Etapa 2",date:"2026-11-01T23:50:00"},{name:"Examen de Suficiencia",date:"2026-11-30T21:00:00"}]}
+    "too115": {code:"TOO-115", name:"Tecnolog\u00eda Orientada a Objetos", group:"Grupo 3", activities:[{name:"Laboratorio 1",date:"2026-09-03T19:00:00"},{name:"Proyecto \u2014 Etapa 1",date:"2026-09-20T23:55:00"},{name:"Proyecto Etapa 1 \u2014 Exposici\u00f3n y defensa",date:"2026-09-24T19:00:00"},{name:"Laboratorio 2",date:"2026-10-29T23:55:00"},{name:"Proyecto \u2014 Etapa 2",date:"2026-11-15T23:55:00"},{name:"Proyecto Etapa 2 \u2014 Exposici\u00f3n y defensa",date:"2026-11-19T19:00:00"},{name:"Examen Final Te\u00f3rico",date:"2026-11-23T21:00:00"},{name:"Examen de Suficiencia",date:"2026-12-07T21:00:00"}]}
   };
 
-  const order = ["cpr115", "too115", "ibd115", "acc115", "api115"];
+  const dayGroups = [["Lunes", ["ibd115", "api115"]], ["Martes", ["cpr115", "acc115"]], ["Jueves", ["too115"]]];
   const now = new Date();
-  const grid = document.getElementById('grid');
+  const groupsEl = document.getElementById('groups');
 
   const fmt = d => d.toLocaleDateString('es-SV', {day:'2-digit', month:'short'});
 
-  order.forEach(key => {
+  function buildCard(key){
     const s = subjects[key];
     const upcoming = s.activities
       .map(a => ({...a, dt: new Date(a.date)}))
@@ -142,6 +149,22 @@
       <h2>${s.name}</h2>
       <div class="next">${nextHtml}</div>
     `;
-    grid.appendChild(a);
+    return a;
+  }
+
+  dayGroups.forEach(([day, keys]) => {
+    const section = document.createElement('div');
+    section.className = 'daygroup';
+    const head = document.createElement('div');
+    head.className = 'dayhead';
+    head.textContent = day;
+    section.appendChild(head);
+
+    const grid = document.createElement('div');
+    grid.className = 'grid';
+    keys.forEach(key => grid.appendChild(buildCard(key)));
+    section.appendChild(grid);
+
+    groupsEl.appendChild(section);
   });
 </script>
