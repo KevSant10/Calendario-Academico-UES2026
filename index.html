@@ -1,147 +1,386 @@
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Mi Semana Académica</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Actividades Evaluadas</title>
 <style>
-  :root{
-    --bg:#f4f6f8;
-    --surface:#ffffff;
-    --surface-2:#eef1f5;
-    --ink:#182233;
-    --ink-soft:#57647a;
-    --ink-faint:#8a97ab;
-    --line:#dde3ea;
-    --accent:#28587f;
-    --accent-soft:#e4edf4;
-    --urgent:#b8460e;
-    --urgent-soft:#fbe9df;
-    --done:#3c7a53;
-    --done-soft:#e4f1e7;
-    --shadow: 0 1px 2px rgba(24,34,51,.06), 0 8px 24px -12px rgba(24,34,51,.12);
+  :root {
+    --bg: #f4f6f8;
+    --surface: #ffffff;
+    --surface-2: #eef1f5;
+    --ink: #182233;
+    --ink-soft: #57647a;
+    --ink-faint: #8a97ab;
+    --line: #dde3ea;
+    --accent: #28587f;
+    --accent-soft: #e4edf4;
+    --urgent: #b8460e;
+    --urgent-soft: #fbe9df;
+    --done: #3c7a53;
+    --done-soft: #e4f1e7;
+    --shadow:
+      0 1px 2px rgba(24, 34, 51, 0.06), 0 8px 24px -12px rgba(24, 34, 51, 0.12);
   }
-  @media (prefers-color-scheme: dark){
-    :root:not([data-theme="light"]){
-      --bg:#0f1520; --surface:#161f2c; --surface-2:#1c2635;
-      --ink:#e7ecf3; --ink-soft:#a3aec1; --ink-faint:#6d7889; --line:#293446;
-      --accent:#7fb0da; --accent-soft:#1e3247;
-      --urgent:#f0925c; --urgent-soft:#3a2418;
-      --done:#7fc596; --done-soft:#1c3324;
-      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 28px -14px rgba(0,0,0,.6);
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0f1520;
+      --surface: #161f2c;
+      --surface-2: #1c2635;
+      --ink: #e7ecf3;
+      --ink-soft: #a3aec1;
+      --ink-faint: #6d7889;
+      --line: #293446;
+      --accent: #7fb0da;
+      --accent-soft: #1e3247;
+      --urgent: #f0925c;
+      --urgent-soft: #3a2418;
+      --done: #7fc596;
+      --done-soft: #1c3324;
+      --shadow:
+        0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 28px -14px rgba(0, 0, 0, 0.6);
     }
   }
-  :root[data-theme="dark"]{
-    --bg:#0f1520; --surface:#161f2c; --surface-2:#1c2635;
-    --ink:#e7ecf3; --ink-soft:#a3aec1; --ink-faint:#6d7889; --line:#293446;
-    --accent:#7fb0da; --accent-soft:#1e3247;
-    --urgent:#f0925c; --urgent-soft:#3a2418;
-    --done:#7fc596; --done-soft:#1c3324;
-    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 28px -14px rgba(0,0,0,.6);
+  :root[data-theme="dark"] {
+    --bg: #0f1520;
+    --surface: #161f2c;
+    --surface-2: #1c2635;
+    --ink: #e7ecf3;
+    --ink-soft: #a3aec1;
+    --ink-faint: #6d7889;
+    --line: #293446;
+    --accent: #7fb0da;
+    --accent-soft: #1e3247;
+    --urgent: #f0925c;
+    --urgent-soft: #3a2418;
+    --done: #7fc596;
+    --done-soft: #1c3324;
+    --shadow:
+      0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 28px -14px rgba(0, 0, 0, 0.6);
   }
-  *{box-sizing:border-box;}
-  body{background:var(--bg);color:var(--ink);font-family:'IBM Plex Sans', -apple-system, Segoe UI, sans-serif;line-height:1.5;margin:0;}
-  h1,h2{font-family:'Fraunces', Georgia, serif;font-weight:600;text-wrap:balance;margin:0;}
-  .tab{font-variant-numeric:tabular-nums;}
-  a{color:inherit;text-decoration:none;}
-
-  .wrap{max-width:920px;margin:0 auto;padding:40px 20px 64px;}
-
-  header{border-bottom:2px solid var(--ink);padding-bottom:18px;margin-bottom:30px;}
-  header .eyebrow{font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:6px;}
-  header h1{font-size:1.9rem;}
-  header .sub{color:var(--ink-soft);font-size:.92rem;margin-top:6px;}
-
-  .daygroup{margin-bottom:32px;}
-  .daygroup .dayhead{
-    font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;font-weight:700;
-    color:var(--accent);margin-bottom:10px;display:flex;align-items:center;gap:10px;
+  * {
+    box-sizing: border-box;
   }
-  .daygroup .dayhead::after{content:"";flex:1;height:1px;background:var(--line);}
-
-  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
-  @media (max-width:640px){.grid{grid-template-columns:1fr;}}
-
-  .card{
-    display:block;
-    background:var(--surface);
-    border:1px solid var(--line);
-    border-left:4px solid var(--accent);
-    border-radius:10px;
-    padding:18px 20px;
-    box-shadow:var(--shadow);
-    transition:transform .12s, box-shadow .12s;
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family:
+      "IBM Plex Sans",
+      -apple-system,
+      Segoe UI,
+      sans-serif;
+    line-height: 1.5;
+    margin: 0;
   }
-  .card:hover{transform:translateY(-2px);box-shadow:0 4px 14px -6px rgba(24,34,51,.25), var(--shadow);}
-  .card.urgent{border-left-color:var(--urgent);}
-  .card.done{border-left-color:var(--done);}
+  h1,
+  h2 {
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 600;
+    text-wrap: balance;
+    margin: 0;
+  }
+  .tab {
+    font-variant-numeric: tabular-nums;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
 
-  .card .code{
-    font-size:.68rem;letter-spacing:.07em;text-transform:uppercase;font-weight:700;
-    color:var(--accent);margin-bottom:4px;
+  .wrap {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 40px 20px 64px;
   }
-  .card .group{
-    display:inline-block;margin-left:8px;font-size:.62rem;letter-spacing:.05em;text-transform:uppercase;
-    font-weight:700;color:var(--ink-soft);background:var(--surface-2);padding:1px 6px;border-radius:99px;vertical-align:middle;
-  }
-  .card h2{font-size:1.12rem;margin-top:4px;margin-bottom:12px;}
-  .card .next{font-size:.82rem;color:var(--ink-soft);}
-  .card .next strong{color:var(--ink);font-weight:600;}
-  .card .next .days{
-    display:inline-block;font-weight:700;color:var(--urgent);
-  }
-  .card.done .next .days{color:var(--done);}
 
-  footer{border-top:1px solid var(--line);padding-top:16px;margin-top:36px;font-size:.78rem;color:var(--ink-faint);}
+  header {
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 18px;
+    margin-bottom: 30px;
+  }
+  header .eyebrow {
+    font-size: 0.72rem;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  header h1 {
+    font-size: 1.9rem;
+  }
+  header .sub {
+    color: var(--ink-soft);
+    font-size: 0.92rem;
+    margin-top: 6px;
+  }
+
+  .daygroup {
+    margin-bottom: 32px;
+  }
+  .daygroup .dayhead {
+    font-size: 0.72rem;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .daygroup .dayhead::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 640px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .card {
+    display: block;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--accent);
+    border-radius: 10px;
+    padding: 18px 20px;
+    box-shadow: var(--shadow);
+    transition:
+      transform 0.12s,
+      box-shadow 0.12s;
+  }
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 4px 14px -6px rgba(24, 34, 51, 0.25),
+      var(--shadow);
+  }
+  .card.urgent {
+    border-left-color: var(--urgent);
+  }
+  .card.done {
+    border-left-color: var(--done);
+  }
+
+  .card .code {
+    font-size: 0.68rem;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .card .group {
+    display: inline-block;
+    margin-left: 8px;
+    font-size: 0.62rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--ink-soft);
+    background: var(--surface-2);
+    padding: 1px 6px;
+    border-radius: 99px;
+    vertical-align: middle;
+  }
+  .card h2 {
+    font-size: 1.12rem;
+    margin-top: 4px;
+    margin-bottom: 12px;
+  }
+  .card .next {
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+  }
+  .card .next strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .card .next .days {
+    display: inline-block;
+    font-weight: 700;
+    color: var(--urgent);
+  }
+  .card.done .next .days {
+    color: var(--done);
+  }
+
+  footer {
+    border-top: 1px solid var(--line);
+    padding-top: 16px;
+    margin-top: 36px;
+    font-size: 0.78rem;
+    color: var(--ink-faint);
+  }
 </style>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap"
+/>
 
 <div class="wrap">
   <header>
-    <div class="eyebrow">UES en Línea · Escuela de Ingeniería de Sistemas Informáticos</div>
+    <div class="eyebrow">
+      UES en Línea · Escuela de Ingeniería de Sistemas Informáticos
+    </div>
     <h1>Horario de Clases</h1>
-    <div class="sub">Ciclo II 2026 · Materias ordenadas por día de tutoría, sincronizadas entre tus dispositivos.</div>
+    <div class="sub">
+      Ciclo II 2026 · Materias ordenadas por día de tutoría, sincronizadas entre
+      tus dispositivos.
+    </div>
   </header>
 
   <div id="groups"></div>
 
   <footer>
-    Datos tomados de las Orientaciones Académicas de cada materia. Actualiza cada calendario individual para llevar tu avance al día.
+    <p>Datos tomados de las Orientaciones Académicas de cada materia.</p>
+    <p>© Desarrollado por Kevin Santos | UES®</p>
   </footer>
 </div>
 
 <script>
   const subjects = {
-    "ibd115": {code:"IBD-115", name:"Implementaci\u00f3n de Bases de Datos", group:"Grupo 1", activities:[{name:"Propuesta de Proyecto",date:"2026-08-19T23:50:00"},{name:"Proyecto \u2014 Etapa 1",date:"2026-09-12T23:50:00"},{name:"Parcial Te\u00f3rico 1",date:"2026-09-28T19:00:00"},{name:"Proyecto \u2014 Etapa 2",date:"2026-10-11T23:50:00"},{name:"Laboratorio \u2014 Implementaci\u00f3n Resultante",date:"2026-11-08T23:50:00"},{name:"Laboratorio \u2014 Defensa individual",date:"2026-11-12T19:00:00"},{name:"Parcial Te\u00f3rico 2",date:"2026-11-19T19:00:00"},{name:"Examen de Suficiencia",date:"2026-12-08T19:00:00"}]},
-    "api115": {code:"API-115", name:"Admin. de Proyectos Inform\u00e1ticos", group:"Grupo 1", activities:[{name:"Tarea Ex Aula",date:"2026-08-16T23:50:00"},{name:"Proyecto \u2014 Etapa 1",date:"2026-09-20T23:50:00"},{name:"Parcial 1",date:"2026-10-15T21:00:00"},{name:"Proyecto \u2014 Etapa 2",date:"2026-11-01T23:50:00"},{name:"Examen de Suficiencia",date:"2026-11-30T21:00:00"}]},
-    "cpr115": {code:"CPR-115", name:"Consultor\u00eda Profesional", group:"Grupo 1", activities:[{name:"Discusi\u00f3n 1",date:"2026-08-30T23:55:00"},{name:"Tarea de Investigaci\u00f3n",date:"2026-09-06T23:55:00"},{name:"Desarrollo de Proyecto \u2014 Etapa 1",date:"2026-09-13T23:55:00"},{name:"Primer Examen Parcial",date:"2026-09-22T19:00:00"},{name:"Discusi\u00f3n 2",date:"2026-10-04T23:55:00"},{name:"Desarrollo de Proyecto \u2014 Etapa 2",date:"2026-10-11T23:55:00"},{name:"Desarrollo de Proyecto \u2014 Etapa 3",date:"2026-11-01T23:55:00"},{name:"Discusi\u00f3n 3",date:"2026-11-08T23:55:00"},{name:"Segundo Examen Parcial",date:"2026-11-18T21:00:00"},{name:"Examen de Suficiencia",date:"2026-12-01T21:00:00"}]},
-    "acc115": {code:"ACC-115", name:"Admin. de Centros de C\u00f3mputo", group:"Grupo 3", activities:[{name:"Tarea Ex Aula 1",date:"2026-09-06T23:50:00"},{name:"Tarea Ex Aula 2",date:"2026-09-27T23:50:00"},{name:"Proyecto Integrador \u2014 Etapa 1",date:"2026-10-06T23:50:00"},{name:"Parcial Te\u00f3rico 1",date:"2026-10-13T21:00:00"},{name:"Proyecto Integrador \u2014 Etapa 2",date:"2026-11-10T23:50:00"},{name:"Tarea Ex Aula 3",date:"2026-11-10T23:50:00"},{name:"Parcial Te\u00f3rico 2",date:"2026-11-17T21:00:00"},{name:"Examen de Suficiencia",date:"2026-11-30T21:00:00"}]},
-    "too115": {code:"TOO-115", name:"Tecnolog\u00eda Orientada a Objetos", group:"Grupo 3", activities:[{name:"Laboratorio 1",date:"2026-09-03T19:00:00"},{name:"Proyecto \u2014 Etapa 1",date:"2026-09-20T23:55:00"},{name:"Proyecto Etapa 1 \u2014 Exposici\u00f3n y defensa",date:"2026-09-24T19:00:00"},{name:"Laboratorio 2",date:"2026-10-29T23:55:00"},{name:"Proyecto \u2014 Etapa 2",date:"2026-11-15T23:55:00"},{name:"Proyecto Etapa 2 \u2014 Exposici\u00f3n y defensa",date:"2026-11-19T19:00:00"},{name:"Examen Final Te\u00f3rico",date:"2026-11-23T21:00:00"},{name:"Examen de Suficiencia",date:"2026-12-07T21:00:00"}]}
+    ibd115: {
+      code: "IBD-115",
+      name: "Implementaci\u00f3n de Bases de Datos",
+      group: "Grupo 1",
+      activities: [
+        { name: "Propuesta de Proyecto", date: "2026-08-19T23:50:00" },
+        { name: "Proyecto \u2014 Etapa 1", date: "2026-09-12T23:50:00" },
+        { name: "Parcial Te\u00f3rico 1", date: "2026-09-28T19:00:00" },
+        { name: "Proyecto \u2014 Etapa 2", date: "2026-10-11T23:50:00" },
+        {
+          name: "Laboratorio \u2014 Implementaci\u00f3n Resultante",
+          date: "2026-11-08T23:50:00",
+        },
+        {
+          name: "Laboratorio \u2014 Defensa individual",
+          date: "2026-11-12T19:00:00",
+        },
+        { name: "Parcial Te\u00f3rico 2", date: "2026-11-19T19:00:00" },
+        { name: "Examen de Suficiencia", date: "2026-12-08T19:00:00" },
+      ],
+    },
+    api115: {
+      code: "API-115",
+      name: "Admin. de Proyectos Inform\u00e1ticos",
+      group: "Grupo 1",
+      activities: [
+        { name: "Tarea Ex Aula", date: "2026-08-16T23:50:00" },
+        { name: "Proyecto \u2014 Etapa 1", date: "2026-09-20T23:50:00" },
+        { name: "Parcial 1", date: "2026-10-15T21:00:00" },
+        { name: "Proyecto \u2014 Etapa 2", date: "2026-11-01T23:50:00" },
+        { name: "Examen de Suficiencia", date: "2026-11-30T21:00:00" },
+      ],
+    },
+    cpr115: {
+      code: "CPR-115",
+      name: "Consultor\u00eda Profesional",
+      group: "Grupo 1",
+      activities: [
+        { name: "Discusi\u00f3n 1", date: "2026-08-30T23:55:00" },
+        { name: "Tarea de Investigaci\u00f3n", date: "2026-09-06T23:55:00" },
+        {
+          name: "Desarrollo de Proyecto \u2014 Etapa 1",
+          date: "2026-09-13T23:55:00",
+        },
+        { name: "Primer Examen Parcial", date: "2026-09-22T19:00:00" },
+        { name: "Discusi\u00f3n 2", date: "2026-10-04T23:55:00" },
+        {
+          name: "Desarrollo de Proyecto \u2014 Etapa 2",
+          date: "2026-10-11T23:55:00",
+        },
+        {
+          name: "Desarrollo de Proyecto \u2014 Etapa 3",
+          date: "2026-11-01T23:55:00",
+        },
+        { name: "Discusi\u00f3n 3", date: "2026-11-08T23:55:00" },
+        { name: "Segundo Examen Parcial", date: "2026-11-18T21:00:00" },
+        { name: "Examen de Suficiencia", date: "2026-12-01T21:00:00" },
+      ],
+    },
+    acc115: {
+      code: "ACC-115",
+      name: "Admin. de Centros de C\u00f3mputo",
+      group: "Grupo 3",
+      activities: [
+        { name: "Tarea Ex Aula 1", date: "2026-09-06T23:50:00" },
+        { name: "Tarea Ex Aula 2", date: "2026-09-27T23:50:00" },
+        {
+          name: "Proyecto Integrador \u2014 Etapa 1",
+          date: "2026-10-06T23:50:00",
+        },
+        { name: "Parcial Te\u00f3rico 1", date: "2026-10-13T21:00:00" },
+        {
+          name: "Proyecto Integrador \u2014 Etapa 2",
+          date: "2026-11-10T23:50:00",
+        },
+        { name: "Tarea Ex Aula 3", date: "2026-11-10T23:50:00" },
+        { name: "Parcial Te\u00f3rico 2", date: "2026-11-17T21:00:00" },
+        { name: "Examen de Suficiencia", date: "2026-11-30T21:00:00" },
+      ],
+    },
+    too115: {
+      code: "TOO-115",
+      name: "Tecnolog\u00eda Orientada a Objetos",
+      group: "Grupo 3",
+      activities: [
+        { name: "Laboratorio 1", date: "2026-09-03T19:00:00" },
+        { name: "Proyecto \u2014 Etapa 1", date: "2026-09-20T23:55:00" },
+        {
+          name: "Proyecto Etapa 1 \u2014 Exposici\u00f3n y defensa",
+          date: "2026-09-24T19:00:00",
+        },
+        { name: "Laboratorio 2", date: "2026-10-29T23:55:00" },
+        { name: "Proyecto \u2014 Etapa 2", date: "2026-11-15T23:55:00" },
+        {
+          name: "Proyecto Etapa 2 \u2014 Exposici\u00f3n y defensa",
+          date: "2026-11-19T19:00:00",
+        },
+        { name: "Examen Final Te\u00f3rico", date: "2026-11-23T21:00:00" },
+        { name: "Examen de Suficiencia", date: "2026-12-07T21:00:00" },
+      ],
+    },
   };
 
-  const dayGroups = [["Lunes", ["ibd115", "api115"]], ["Martes", ["cpr115", "acc115"]], ["Jueves", ["too115"]]];
+  const dayGroups = [
+    ["Lunes", ["ibd115", "api115"]],
+    ["Martes", ["cpr115", "acc115"]],
+    ["Jueves", ["too115"]],
+  ];
   const now = new Date();
-  const groupsEl = document.getElementById('groups');
+  const groupsEl = document.getElementById("groups");
 
-  const fmt = d => d.toLocaleDateString('es-SV', {day:'2-digit', month:'short'});
+  const fmt = (d) =>
+    d.toLocaleDateString("es-SV", { day: "2-digit", month: "short" });
 
-  function buildCard(key){
+  function buildCard(key) {
     const s = subjects[key];
     const upcoming = s.activities
-      .map(a => ({...a, dt: new Date(a.date)}))
-      .filter(a => a.dt >= now)
-      .sort((a,b) => a.dt - b.dt);
+      .map((a) => ({ ...a, dt: new Date(a.date) }))
+      .filter((a) => a.dt >= now)
+      .sort((a, b) => a.dt - b.dt);
 
     const next = upcoming[0];
-    const a = document.createElement('a');
-    a.href = key + '.html';
-    a.className = 'card';
+    const a = document.createElement("a");
+    a.href = key + ".html";
+    a.className = "card";
 
     let nextHtml;
     if (next) {
       const diffDays = Math.ceil((next.dt - now) / 86400000);
-      if (diffDays <= 5) a.classList.add('urgent');
-      nextHtml = `Próxima: <strong>${next.name}</strong><br><span class="days tab">${diffDays === 0 ? 'hoy' : 'en ' + diffDays + ' día' + (diffDays===1?'':'s')}</span> · ${fmt(next.dt)}`;
+      if (diffDays <= 5) a.classList.add("urgent");
+      nextHtml = `Próxima: <strong>${next.name}</strong><br><span class="days tab">${diffDays === 0 ? "hoy" : "en " + diffDays + " día" + (diffDays === 1 ? "" : "s")}</span> · ${fmt(next.dt)}`;
     } else {
-      a.classList.add('done');
-      nextHtml = 'No hay actividades pendientes.';
+      a.classList.add("done");
+      nextHtml = "No hay actividades pendientes.";
     }
 
     a.innerHTML = `
@@ -153,16 +392,16 @@
   }
 
   dayGroups.forEach(([day, keys]) => {
-    const section = document.createElement('div');
-    section.className = 'daygroup';
-    const head = document.createElement('div');
-    head.className = 'dayhead';
+    const section = document.createElement("div");
+    section.className = "daygroup";
+    const head = document.createElement("div");
+    head.className = "dayhead";
     head.textContent = day;
     section.appendChild(head);
 
-    const grid = document.createElement('div');
-    grid.className = 'grid';
-    keys.forEach(key => grid.appendChild(buildCard(key)));
+    const grid = document.createElement("div");
+    grid.className = "grid";
+    keys.forEach((key) => grid.appendChild(buildCard(key)));
     section.appendChild(grid);
 
     groupsEl.appendChild(section);
